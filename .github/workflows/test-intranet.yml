@@ -1,0 +1,26 @@
+name: Run Cypress Tests
+
+on:
+  schedule:
+    - cron: '30 7 * * *'   # 07:30 da manhã
+    - cron: '0 17 * * *'   # 17:00 da tarde
+  workflow_dispatch:
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Cypress tests
+        run: npx cypress run
