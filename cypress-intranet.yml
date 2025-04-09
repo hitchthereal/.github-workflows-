@@ -1,0 +1,34 @@
+name: Teste Intranet
+
+on:
+  schedule:
+    - cron: '30 10 * * *'  # 07:30 BR
+    - cron: '0 20 * * *'   # 17:00 BR
+  workflow_dispatch:
+
+jobs:
+  cypress-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Clonando o repositório
+        uses: actions/checkout@v3
+
+      - name: 🟢 Instalando Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: 📦 Instalando dependências
+        run: npm ci
+
+      - name: 🚀 Rodando testes Cypress
+        run: npx cypress run
+
+      - name: ✅ Finalizado com sucesso
+        if: success()
+        run: echo "Os testes passaram com sucesso!"
+
+      - name: ❌ Falha nos testes
+        if: failure()
+        run: echo "Os testes falharam!"
